@@ -23,10 +23,10 @@ func LoginHandler(c *gin.Context) {
 
 	response.IsVer = service.IsPasswordCorrect(req.Email, req.Password)
 
-	isInDB, _ := db.VerificationUser(response, req) // is user in DB
+	isInDB, userId, _ := db.VerificationUser(response, req) // is user in DB
 	if isInDB.IsInData == true && isInDB.IsVer == true {
-		refreshToken, _ := utils.CreateRefreshToken(req.Password)
-		accessToken, _ := utils.CreateAccessToken(req.Password)
+		refreshToken, _ := utils.CreateRefreshToken(userId)
+		accessToken, _ := utils.CreateAccessToken(userId)
 		db.SaveRefreshToken(refreshToken, req.Email) // save refresh token in DB to email
 		var res = models.UserWithTokens{
 			IsInDB:   models.IsInDB{IsVer: true, IsInData: true},
@@ -44,12 +44,12 @@ func ProfileHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, res)
 	}
-	var err = db.AddUser(req) // save user data
+	id, err := db.AddUser(req) // save user data
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	} else {
-		refreshToken, _ := utils.CreateRefreshToken(req.Password)
-		accessToken, _ := utils.CreateAccessToken(req.Password)
+		refreshToken, _ := utils.CreateRefreshToken(id)
+		accessToken, _ := utils.CreateAccessToken(id)
 		db.SaveRefreshToken(refreshToken, req.Email) // save refresh token in DB to email
 		var res = models.StatusWithTokens{
 			StatusR:  models.StatusR{Status: true},

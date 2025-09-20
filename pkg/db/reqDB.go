@@ -6,34 +6,42 @@ import (
 	"log"
 )
 
-func VerificationUser(response models.IsInDB, req models.VerificationRequest) (models.IsInDB, error) {
+func VerificationUser(response models.IsInDB, req models.VerificationRequest) (models.IsInDB, int, error) {
 
 	var id int
 	err := DB.QueryRow("SELECT id FROM users WHERE email = ?", req.Email).Scan(&id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			response.IsInData = false
-			return response, nil
+			return response, -1, nil
 		} else {
 			// General database error
 			log.Printf("Database error in handleVerification: %v", err)
-			return response, err
+			return response, id, err
 		}
 
 	}
 	response.IsInData = true
-	return response, nil
+	return response, id, nil
 }
 
-func AddUser(data models.SignupJson) error {
-	_, err := DB.Exec("INSERT INTO users (name, surname, email, password) VALUES (?, ?, ?, ?)",
-		data.Name, data.Surname, data.Email, data.Password)
+func AddUser(data models.SignupJson) (int, error) {
+	result, err := DB.Exec(
+		"INSERT INTO users (name, surname, email, password) VALUES (?, ?, ?, ?)",
+		data.Name, data.Surname, data.Email, data.Password,
+	)
 	if err != nil {
 		log.Println("Signup error:", err)
-		return err
+		return 0, err
 	}
 
-	return nil
+	id, err := result.LastInsertId()
+	if err != nil {
+		log.Println("Get last insert id error:", err)
+		return 0, err
+	}
+
+	return int(id), nil
 }
 
 func SaveRefreshToken(refreshToken string, email string) {
@@ -58,11 +66,11 @@ func GetPassword(email string, password string) bool {
 	return isValid
 }
 
-func RefreshToken(email string, refreshToken string) (string, error) {
-	var userPass string
+func RefreshToken(email string, refreshToken string) (int, error) {
+	var id int
 	err := DB.QueryRow(
-		"SELECT password FROM users WHERE email = ? AND token = ?",
+		"SELECT id FROM users WHERE email = ? AND token = ?",
 		email, refreshToken,
-	).Scan(&userPass)
-	return userPass, err
+	).Scan(&id)
+	return id, err
 }
