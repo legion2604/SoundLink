@@ -10,7 +10,7 @@ var accessSecret = []byte("secret_access")
 func CreateAccessToken(userID int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["userId"] = userID
-	claims["exp"] = time.Now().Add(122 * time.Minute).Unix() // 2 часа 2 минуты
+	claims["exp"] = time.Now().Add(3 * time.Hour).Unix() // 3 часа
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(accessSecret)

@@ -6,6 +6,5 @@ type TokenRes struct {
 }
 
 var RefreshToken struct {
-	Email        string `json:"email"`
-	RefreshToken string `json:"refreshToken"`
+	Email string `json:"email"`
 }

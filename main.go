@@ -8,11 +8,19 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"os"
+	"time"
 )
 
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://127.0.0.1:5500"}, // ⚡ origin фронта
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		AllowCredentials: true, // ⚡ обязательно для HttpOnly cookie
+		MaxAge:           12 * time.Hour,
+	}))
 
 	db.ConnectDB()
 	r.POST("/login", controller.LoginHandler)

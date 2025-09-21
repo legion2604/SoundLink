@@ -19,8 +19,8 @@ func RefreshTokenHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
-
-	userPass, err := db.RefreshToken(req.Email, req.RefreshToken)
+	refreshToken, _ := c.Cookie("refresh_token")
+	userPass, err := db.RefreshToken(req.Email, refreshToken)
 
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid refresh token"})
