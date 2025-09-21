@@ -3,73 +3,119 @@ package controller
 import (
 	"SoundLink/pkg/db"
 	"cloud.google.com/go/storage"
-	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"io"
 	"log"
 	"net/http"
+	"os"
+	"time"
 )
 
-const bucketName = "project_sound_link" // бакет в GCS
-
-func UploadFileHandler(c *gin.Context) {
-	// Получаем userId из контекста (он пришёл из токена)
-	userId := c.GetInt("userId") // теперь точно будет int
+// GenerateSignedURLHandler генерирует URL для загрузки (PUT) и просмотра (GET).
+func GenerateSignedURLHandler(c *gin.Context) {
+	// ... (код для userId и filename)
+	userId := c.GetInt("userId")
 	if userId == 0 {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}
 
-	// Получаем файл из формы
-	file, header, err := c.Request.FormFile("file")
+	filename := c.Query("filename")
+	if filename == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "filename is required"})
+		return
+	}
+
+	// Для примера, получим тип контента из запроса
+	// Например: /generate-signed-url?filename=audio.mp3&content_type=audio/mpeg
+	contentType := c.Query("content_type")
+	if contentType == "" {
+		// Установите тип по умолчанию, если он не был предоставлен
+		contentType = "audio/mpeg"
+	}
+
+	filename = fmt.Sprintf("%d_%s", userId, filename)
+
+	// URL для загрузки (PUT)
+	uploadURL, err := generateSignedURL(filename, "PUT", contentType)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "No file found"})
+		log.Printf("Signed URL (PUT) error: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate upload URL"})
 		return
 	}
-	defer file.Close()
 
-	// Создаем имя файла в бакете (можно добавить userId в имя для уникальности)
-	filename := fmt.Sprintf("%d_%s", userId, header.Filename)
-
-	// Контекст для GCS
-	ctx := context.Background()
-	client, err := storage.NewClient(ctx)
+	// URL для просмотра (GET)
+	viewURL, err := generateSignedURL(filename, "GET", contentType)
 	if err != nil {
-		log.Println("GCS client error:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "GCS client error"})
+		log.Printf("Signed URL (GET) error: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate view URL"})
 		return
 	}
-	defer client.Close()
-
-	// Загружаем файл в бакет
-	wc := client.Bucket(bucketName).Object(filename).NewWriter(ctx)
-	if _, err := io.Copy(wc, file); err != nil {
-		log.Println("Failed to write to GCS:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to upload"})
-		return
-	}
-	if err := wc.Close(); err != nil {
-		log.Println("GCS Close error:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Формируем публичную ссылку
-	publicURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", bucketName, filename)
-
-	// Сохраняем ссылку в БД
-	_, err = db.DB.Exec("INSERT INTO music (url, creatorID) VALUES (?, ?)", publicURL, userId)
+	_, err = db.DB.Exec("INSERT INTO music (url, creatorID) VALUES (?, ?)", viewURL, userId)
 	if err != nil {
 		log.Println("DB insert error:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save file info"})
 		return
 	}
-
-	// Ответ клиенту
 	c.JSON(http.StatusOK, gin.H{
-		"message": "File uploaded successfully",
-		"url":     publicURL,
-		"userId":  userId,
+		"upload_url": uploadURL,
+		"view_url":   viewURL,
+		"filename":   filename,
 	})
+}
+
+// generateSignedURL создает подписанный URL для указанного HTTP-метода.
+func generateSignedURL(objectName, method, contentType string) (string, error) {
+	bucketName := os.Getenv("BUCKET_NAME")
+	if bucketName == "" {
+		return "", fmt.Errorf("BUCKET_NAME is empty")
+	}
+
+	credsFile := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	if credsFile == "" {
+		return "", fmt.Errorf("GOOGLE_APPLICATION_CREDENTIALS is empty")
+	}
+
+	jsonKey, err := os.ReadFile(credsFile)
+	if err != nil {
+		return "", err
+	}
+
+	var sa struct {
+		ClientEmail string `json:"client_email"`
+		PrivateKey  string `json:"private_key"`
+	}
+	if err := json.Unmarshal(jsonKey, &sa); err != nil {
+		return "", err
+	}
+
+	opts := &storage.SignedURLOptions{
+		GoogleAccessID: sa.ClientEmail,
+		PrivateKey:     []byte(sa.PrivateKey),
+		Method:         method,
+		Expires:        time.Now().Add(15 * time.Minute),
+	}
+
+	// Для PUT-запросов Content-Type обязателен
+	if method == "PUT" {
+		opts.ContentType = contentType
+	}
+
+	// Здесь самое важное изменение для просмотра
+	if method == "GET" {
+		// Указываем, что ответ должен иметь заголовок Content-Type
+		// и Content-Disposition: inline, чтобы браузер отобразил файл
+		opts.Headers = []string{
+			"Content-Type:" + contentType,
+			"Content-Disposition:inline",
+		}
+	}
+
+	url, err := storage.SignedURL(bucketName, objectName, opts)
+	if err != nil {
+		return "", err
+	}
+
+	return url, nil
 }

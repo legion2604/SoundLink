@@ -4,24 +4,16 @@ import (
 	"SoundLink/internal/controller"
 	"SoundLink/internal/controller/middleware"
 	"SoundLink/pkg/db"
-	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"os"
-	"time"
 )
 
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://127.0.0.1:5500"}, // ⚡ origin фронта
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
-		AllowCredentials: true, // ⚡ обязательно для HttpOnly cookie
-		MaxAge:           12 * time.Hour,
-	}))
-
+	os.Setenv("BUCKET_NAME", "project_sound_link")                                                                    // Замените на имя вашего бакета
+	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "C:/Users/Win10_Game_OS/IdeaProjects/SoundLink/service-account.json") // Замените на путь к вашему файлу JSON
 	db.ConnectDB()
 	r.POST("/login", controller.LoginHandler)
 	r.GET("/profile", controller.ProfileHandler)
@@ -31,10 +23,9 @@ func main() {
 	auth := r.Group("/api")
 	auth.Use(middleware.AuthMiddleware())
 	{
-		auth.POST("/upload", controller.UploadFileHandler)
+		auth.GET("/generate-signed-url", controller.GenerateSignedURLHandler)
 
 	}
-	fmt.Println(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
 	r.Run(":8080")
 }
