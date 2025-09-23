@@ -34,7 +34,7 @@ func LoginHandler(c *gin.Context) {
 		var res = models.IsInDB{IsVer: true, IsInData: true}
 		c.JSON(http.StatusOK, res)
 	} else {
-		c.JSON(http.StatusOK, err)
+		c.JSON(http.StatusBadRequest, err)
 	}
 } //success
 

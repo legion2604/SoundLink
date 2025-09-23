@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd180ec0-e67b-4a02-94ae-e04c40ac62ea" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/app/models/playlist.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/controller/PlaylistMusicHandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/controller/logout.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/controller/playlistHandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cors.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/authHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/authHandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/controller/saveMusicHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/saveMusicHandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
@@ -131,7 +134,10 @@
       <workItem from="1758362145104" duration="4662000" />
       <workItem from="1758377422262" duration="4838000" />
       <workItem from="1758467131637" duration="4512000" />
-      <workItem from="1758479333927" duration="3700000" />
+      <workItem from="1758479333927" duration="4423000" />
+      <workItem from="1758536855413" duration="9966000" />
+      <workItem from="1758610924313" duration="9020000" />
+      <workItem from="1758644731422" duration="2799000" />
     </task>
     <task id="LOCAL-00001" summary="add func for save music for Google Cloud Storage">
       <option name="closed" value="true" />
@@ -149,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758471518641</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="change func for save music in GCS, added signed URL">
+      <option name="closed" value="true" />
+      <created>1758483132259</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1758483132259</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,7 +172,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add func for save music for Google Cloud Storage" />
     <MESSAGE value="change func JWT token) they go to Cookies" />
-    <option name="LAST_COMMIT_MESSAGE" value="change func JWT token) they go to Cookies" />
+    <MESSAGE value="change func for save music in GCS, added signed URL" />
+    <option name="LAST_COMMIT_MESSAGE" value="change func for save music in GCS, added signed URL" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

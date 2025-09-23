@@ -52,16 +52,18 @@ func GenerateSignedURLHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate view URL"})
 		return
 	}
-	_, err = db.DB.Exec("INSERT INTO music (url, creatorID) VALUES (?, ?)", viewURL, userId)
+	result, _ := db.DB.Exec("INSERT INTO music (url, creatorID) VALUES (?, ?)", viewURL, userId)
 	if err != nil {
 		log.Println("DB insert error:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save file info"})
 		return
 	}
+	id, _ := result.LastInsertId()
+
 	c.JSON(http.StatusOK, gin.H{
 		"upload_url": uploadURL,
 		"view_url":   viewURL,
-		"filename":   filename,
+		"music_id":   id,
 	})
 }
 
