@@ -10,6 +10,16 @@ import (
 	"net/http"
 )
 
+// LoginHandler godoc
+// @Summary Вход пользователя
+// @Description Авторизация пользователя. При успешной авторизации возвращает IsInDB и устанавливает access_token и refresh_token в cookies
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body models.VerificationRequest true "Данные для логина"
+// @Success 200 {object} models.IsInDB "Успешный вход, токены в cookies"
+// @Failure 400 {object} models.IsInDB "Неверный логин или пароль"
+// @Router /login [post]
 func LoginHandler(c *gin.Context) {
 
 	var req models.VerificationRequest
@@ -38,7 +48,17 @@ func LoginHandler(c *gin.Context) {
 	}
 } //success
 
-func ProfileHandler(c *gin.Context) {
+// RegistrationHandler ProfileHandler godoc
+// @Summary Создать профиль пользователя
+// @Description Регистрирует нового пользователя и устанавливает access_token и refresh_token в cookies
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body models.SignupJson true "Данные пользователя для регистрации"
+// @Success 200 {object} models.StatusR "Регистрация успешна, токены в cookies"
+// @Failure 400 {object} models.StatusR "Ошибка регистрации"
+// @Router /registration [post]
+func RegistrationHandler(c *gin.Context) {
 	var req models.SignupJson
 	res := models.StatusR{Status: false}
 	if err := c.ShouldBindJSON(&req); err != nil {

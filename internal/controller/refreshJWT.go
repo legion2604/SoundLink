@@ -10,9 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var refreshSecret = []byte("secret_refresh")
-var accessSecret = []byte("secret_access")
-
 func RefreshTokenHandler(c *gin.Context) {
 	req := models.RefreshToken
 	if err := c.ShouldBindJSON(&req); err != nil {

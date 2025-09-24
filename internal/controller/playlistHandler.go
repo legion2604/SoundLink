@@ -7,6 +7,18 @@ import (
 	"net/http"
 )
 
+// CreatePlaylist godoc
+// @Summary Создать плейлист
+// @Description Создаёт новый плейлист для текущего пользователя
+// @Tags playlist
+// @Accept json
+// @Produce json
+// @Param request body models.Playlist true "Данные плейлиста"
+// @Success 200 {object} map[string]interface{} "Плейлист успешно создан"
+// @Failure 400 {object} map[string]string "Ошибка при парсинге запроса"
+// @Failure 500 {object} map[string]string "Ошибка сервера"
+// @Security AccessToken
+// @Router /api/playlist/add [post]
 func CreatePlaylist(c *gin.Context) {
 	var req models.Playlist
 
@@ -30,6 +42,17 @@ func CreatePlaylist(c *gin.Context) {
 	}
 }
 
+// GetPlaylistToUserId godoc
+// @Summary Получить плейлисты пользователя
+// @Description Возвращает список плейлистов по userId
+// @Tags playlist
+// @Produce json
+// @Param UserId query int true "ID пользователя"
+// @Success 200 {array} models.PlaylistForm "Список плейлистов"
+// @Failure 400 {object} map[string]string "Неверный запрос"
+// @Failure 500 {object} map[string]string "Ошибка сервера"
+// @Security AccessToken
+// @Router /api/playlist/get [get]
 func GetPlaylistToUserId(c *gin.Context) {
 	var userId = c.Query("UserId")
 	rows, err := db.DB.Query("SELECT id, playlist_name, category FROM playlist WHERE creator_id=?", userId)
@@ -53,6 +76,17 @@ func GetPlaylistToUserId(c *gin.Context) {
 	c.JSON(http.StatusOK, playlists)
 }
 
+// DeletePlaylist godoc
+// @Summary Удалить плейлист
+// @Description Удаляет плейлист по playlistId
+// @Tags playlist
+// @Produce json
+// @Param playlistId query int true "ID плейлиста"
+// @Success 200 {object} map[string]string "Плейлист успешно удалён"
+// @Failure 400 {object} map[string]string "Неверный запрос"
+// @Failure 500 {object} map[string]string "Ошибка сервера"
+// @Security AccessToken
+// @Router /api/playlist [delete]
 func DeletePlaylist(c *gin.Context) {
 	playlistId := c.Query("playlistId")
 	_, err := db.DB.Query("DELETE FROM playlist WHERE id=?", playlistId)

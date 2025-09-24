@@ -1,18 +1,26 @@
 package controller
 
 import (
+	"SoundLink/internal/app/service"
 	"SoundLink/pkg/db"
-	"cloud.google.com/go/storage"
-	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"os"
-	"time"
 )
 
-// GenerateSignedURLHandler генерирует URL для загрузки (PUT) и просмотра (GET).
+// GenerateSignedURLHandler godoc
+// @Summary Генерация подписанных URL-адресов для загрузки и просмотра
+// @Description Сгенерируйте предварительно подписанные URL-адреса для загрузки и просмотра музыкальных файлов. А также сохраняет ссылку для просмотра в БД
+// @Tags music
+// @Produce json
+// @Param filename query string true "File name (e.g. audio.mp3)"
+// @Param content_type query string false "MIME type (default: audio/mpeg)"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/music/add [post]
 func GenerateSignedURLHandler(c *gin.Context) {
 	// ... (код для userId и filename)
 	userId := c.GetInt("userId")
@@ -38,7 +46,7 @@ func GenerateSignedURLHandler(c *gin.Context) {
 	filename = fmt.Sprintf("%d_%s", userId, filename)
 
 	// URL для загрузки (PUT)
-	uploadURL, err := generateSignedURL(filename, "PUT", contentType)
+	uploadURL, err := service.GenerateSignedURL(filename, "PUT", contentType)
 	if err != nil {
 		log.Printf("Signed URL (PUT) error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate upload URL"})
@@ -46,7 +54,7 @@ func GenerateSignedURLHandler(c *gin.Context) {
 	}
 
 	// URL для просмотра (GET)
-	viewURL, err := generateSignedURL(filename, "GET", contentType)
+	viewURL, err := service.GenerateSignedURL(filename, "GET", contentType)
 	if err != nil {
 		log.Printf("Signed URL (GET) error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate view URL"})
@@ -67,57 +75,24 @@ func GenerateSignedURLHandler(c *gin.Context) {
 	})
 }
 
-// generateSignedURL создает подписанный URL для указанного HTTP-метода.
-func generateSignedURL(objectName, method, contentType string) (string, error) {
-	bucketName := os.Getenv("BUCKET_NAME")
-	if bucketName == "" {
-		return "", fmt.Errorf("BUCKET_NAME is empty")
-	}
-
-	credsFile := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
-	if credsFile == "" {
-		return "", fmt.Errorf("GOOGLE_APPLICATION_CREDENTIALS is empty")
-	}
-
-	jsonKey, err := os.ReadFile(credsFile)
+// DeleteMusic godoc
+// @Summary Delete a music track
+// @Description Delete a music track by its ID
+// @Tags music
+// @Produce json
+// @Param musicId query int true "Music ID"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/music [delete]
+func DeleteMusic(c *gin.Context) {
+	musicId := c.Query("musicId")
+	_, err := db.DB.Query("DELETE FROM music WHERE id=?", musicId)
 	if err != nil {
-		return "", err
+		c.JSON(http.StatusInternalServerError, err)
+		return
 	}
-
-	var sa struct {
-		ClientEmail string `json:"client_email"`
-		PrivateKey  string `json:"private_key"`
-	}
-	if err := json.Unmarshal(jsonKey, &sa); err != nil {
-		return "", err
-	}
-
-	opts := &storage.SignedURLOptions{
-		GoogleAccessID: sa.ClientEmail,
-		PrivateKey:     []byte(sa.PrivateKey),
-		Method:         method,
-		Expires:        time.Now().Add(15 * time.Minute),
-	}
-
-	// Для PUT-запросов Content-Type обязателен
-	if method == "PUT" {
-		opts.ContentType = contentType
-	}
-
-	// Здесь самое важное изменение для просмотра
-	if method == "GET" {
-		// Указываем, что ответ должен иметь заголовок Content-Type
-		// и Content-Disposition: inline, чтобы браузер отобразил файл
-		opts.Headers = []string{
-			"Content-Type:" + contentType,
-			"Content-Disposition:inline",
-		}
-	}
-
-	url, err := storage.SignedURL(bucketName, objectName, opts)
-	if err != nil {
-		return "", err
-	}
-
-	return url, nil
+	c.JSON(http.StatusOK, gin.H{
+		"massage": "Music was deleted",
+	})
 }

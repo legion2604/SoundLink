@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd180ec0-e67b-4a02-94ae-e04c40ac62ea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/internal/app/models/playlist.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/controller/PlaylistMusicHandler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/controller/logout.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/controller/playlistHandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/app/service/genereteUrlForSaveMusic.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/PlaylistMusicHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/PlaylistMusicHandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/controller/authHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/authHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/logout.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/logout.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/playlistHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/playlistHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/refreshJWT.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/refreshJWT.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/controller/saveMusicHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/saveMusicHandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
@@ -109,6 +112,22 @@
       <filePath value="$PROJECT_DIR$/internal/controller/saveMusicHandler.go" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="SwaggerCodegen">
+      <option name="activeConfigurationType" value="FILE" />
+      <option name="configurationPath" value="" />
+      <option name="customJreEnabled" value="false" />
+      <option name="customTemplatesPath" value="" />
+      <option name="enableDebugLogging" value="false" />
+      <option name="generateToPath" value="C:\Users\Win10_Game_OS\IdeaProjects\SoundLink\gen" />
+      <option name="generationParameters">
+        <list />
+      </option>
+      <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar" />
+      <option name="jdkPath" value="" />
+      <option name="language" value="java" />
+      <option name="specificationPath" value="C:\Users\Win10_Game_OS\IdeaProjects\SoundLink\docs\swagger.yaml" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build main.go" />
@@ -138,6 +157,10 @@
       <workItem from="1758536855413" duration="9966000" />
       <workItem from="1758610924313" duration="9020000" />
       <workItem from="1758644731422" duration="2799000" />
+      <workItem from="1758693686369" duration="800000" />
+      <workItem from="1758695942869" duration="3844000" />
+      <workItem from="1758709240820" duration="826000" />
+      <workItem from="1758733743222" duration="2061000" />
     </task>
     <task id="LOCAL-00001" summary="add func for save music for Google Cloud Storage">
       <option name="closed" value="true" />

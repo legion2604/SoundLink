@@ -7,6 +7,17 @@ import (
 	"net/http"
 )
 
+// AddMusicToPlaylist godoc
+// @Summary Добавить музыку в плейлист
+// @Description Добавить музыку в определенный плейлист
+// @Tags playlist
+// @Accept json
+// @Produce json
+// @Param request body models.AddMusicToPlaylist true "Playlist and Music IDs"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/playlist/music [post]
 func AddMusicToPlaylist(c *gin.Context) {
 	var req models.AddMusicToPlaylist
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -25,6 +36,16 @@ func AddMusicToPlaylist(c *gin.Context) {
 
 }
 
+// GetMusicByPlaylist godoc
+// @Summary Получить музыку из плейлиста
+// @Description Получить все музыки из плейлиста по ID плейлиста
+// @Tags playlist
+// @Produce json
+// @Param playlistID query int true "Playlist ID"
+// @Success 200 {array} models.Music
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/playlist/music [get]
 func GetMusicByPlaylist(c *gin.Context) {
 	playlistID := c.Query("playlistID") // например ?playlistID=1
 
@@ -52,6 +73,17 @@ func GetMusicByPlaylist(c *gin.Context) {
 	c.JSON(http.StatusOK, musics)
 }
 
+// DeleteMusicInPlaylist godoc
+// @Summary Удалить музыку из плейлиста
+// @Description Удалить музыкальный трек из определенного плейлиста
+// @Tags playlist
+// @Accept json
+// @Produce json
+// @Param request body models.MusicIdPlaylistId true "Playlist and Music IDs"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/playlist/music [delete]
 func DeleteMusicInPlaylist(c *gin.Context) {
 	var req models.MusicIdPlaylistId
 	if err := c.ShouldBindJSON(&req); err != nil {
