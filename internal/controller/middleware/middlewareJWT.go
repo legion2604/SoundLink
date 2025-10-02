@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
+	"os"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -15,9 +16,9 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
+		acceessSecret := []byte(os.Getenv("SECRET_ACCESS_KEY"))
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			return []byte("secret_access"), nil
+			return acceessSecret, nil
 		})
 		if err != nil || !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})

@@ -5,17 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd180ec0-e67b-4a02-94ae-e04c40ac62ea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/internal/app/service/genereteUrlForSaveMusic.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/controller/PlaylistMusicHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/PlaylistMusicHandler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/controller/authHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/authHandler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/controller/logout.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/logout.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/middleware/middlewareJWT.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/middleware/middlewareJWT.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/controller/playlistHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/playlistHandler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/controller/refreshJWT.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/refreshJWT.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/controller/saveMusicHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/saveMusicHandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/utils/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/utils/jwt.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +33,9 @@
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="32uWK9pkdy3EdVb55AGNDJelwi6" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -58,7 +61,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -70,14 +73,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Go Build.go build main.go">
-    <configuration name="go build authHandler.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="SoundLink" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/internal/controller/authHandler.go" />
-      <method v="2" />
-    </configuration>
     <configuration name="go build auth.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="SoundLink" />
       <working_directory value="$PROJECT_DIR$" />
@@ -101,6 +96,14 @@
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build middlewareJWT.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="SoundLink" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/internal/controller/middleware/middlewareJWT.go" />
       <method v="2" />
     </configuration>
     <configuration name="go build saveMusicHandler.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -131,7 +134,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build main.go" />
-        <item itemvalue="Go Build.go build authHandler.go" />
+        <item itemvalue="Go Build.go build middlewareJWT.go" />
         <item itemvalue="Go Build.go build saveMusicHandler.go" />
         <item itemvalue="Go Build.go build jwt.go" />
         <item itemvalue="Go Build.go build auth.go" />
@@ -160,7 +163,15 @@
       <workItem from="1758693686369" duration="800000" />
       <workItem from="1758695942869" duration="3844000" />
       <workItem from="1758709240820" duration="826000" />
-      <workItem from="1758733743222" duration="2061000" />
+      <workItem from="1758733743222" duration="3588000" />
+      <workItem from="1758823560019" duration="1229000" />
+      <workItem from="1759246454760" duration="55000" />
+      <workItem from="1759246520148" duration="41000" />
+      <workItem from="1759246576700" duration="17000" />
+      <workItem from="1759246604860" duration="83000" />
+      <workItem from="1759246702955" duration="717000" />
+      <workItem from="1759421886000" duration="3452000" />
+      <workItem from="1759431286928" duration="1698000" />
     </task>
     <task id="LOCAL-00001" summary="add func for save music for Google Cloud Storage">
       <option name="closed" value="true" />
@@ -186,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758483132259</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add swagger to project with lib swaggo">
+      <option name="closed" value="true" />
+      <created>1758736150199</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1758736150199</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,7 +215,8 @@
     <MESSAGE value="add func for save music for Google Cloud Storage" />
     <MESSAGE value="change func JWT token) they go to Cookies" />
     <MESSAGE value="change func for save music in GCS, added signed URL" />
-    <option name="LAST_COMMIT_MESSAGE" value="change func for save music in GCS, added signed URL" />
+    <MESSAGE value="add swagger to project with lib swaggo" />
+    <option name="LAST_COMMIT_MESSAGE" value="add swagger to project with lib swaggo" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

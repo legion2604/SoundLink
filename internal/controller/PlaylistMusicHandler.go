@@ -17,7 +17,7 @@ import (
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/playlist/music [post]
+// @Router /api/playlist/music/add [post]
 func AddMusicToPlaylist(c *gin.Context) {
 	var req models.AddMusicToPlaylist
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -45,7 +45,7 @@ func AddMusicToPlaylist(c *gin.Context) {
 // @Success 200 {array} models.Music
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/playlist/music [get]
+// @Router /api/playlist/music/get [get]
 func GetMusicByPlaylist(c *gin.Context) {
 	playlistID := c.Query("playlistID") // например ?playlistID=1
 
@@ -83,7 +83,7 @@ func GetMusicByPlaylist(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/playlist/music [delete]
+// @Router /api/playlist/music/delete [delete]
 func DeleteMusicInPlaylist(c *gin.Context) {
 	var req models.MusicIdPlaylistId
 	if err := c.ShouldBindJSON(&req); err != nil {

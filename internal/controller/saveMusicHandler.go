@@ -84,7 +84,7 @@ func GenerateSignedURLHandler(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/music [delete]
+// @Router /api/music/delete [delete]
 func DeleteMusic(c *gin.Context) {
 	musicId := c.Query("musicId")
 	_, err := db.DB.Query("DELETE FROM music WHERE id=?", musicId)

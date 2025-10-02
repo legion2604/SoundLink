@@ -86,7 +86,7 @@ func GetPlaylistToUserId(c *gin.Context) {
 // @Failure 400 {object} map[string]string "Неверный запрос"
 // @Failure 500 {object} map[string]string "Ошибка сервера"
 // @Security AccessToken
-// @Router /api/playlist [delete]
+// @Router /api/playlist/delete [delete]
 func DeletePlaylist(c *gin.Context) {
 	playlistId := c.Query("playlistId")
 	_, err := db.DB.Query("DELETE FROM playlist WHERE id=?", playlistId)
